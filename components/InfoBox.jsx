@@ -1,5 +1,3 @@
-import Link from 'next/navigation';
-
 const InfoBox = ({
   heading,
   backgroundColor = 'bg-gray-100',
