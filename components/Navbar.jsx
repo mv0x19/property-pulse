@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import logoImage from '@/assets/images/logo-white.png';
+import logoWhiteImage from '@/assets/images/logo-white.png';
 import profileDefaultImage from '@/assets/images/profile.png';
 import { FaGoogle } from 'react-icons/fa';
 
@@ -50,7 +50,7 @@ const Navbar = () => {
             <Link className='flex flex-shrink-0 items-center' href='/'>
               <Image
                 className='h-10 w-auto'
-                src={logoImage}
+                src={logoWhiteImage}
                 alt='PropertyPulse'
               />
               <span className='ml-2 hidden text-2xl font-bold text-white md:block'>
