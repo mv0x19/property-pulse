@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import logoImage from '@/assets/images/logo-white.png';
@@ -10,6 +11,9 @@ import { FaGoogle } from 'react-icons/fa';
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const pathname = usePathname();
 
   return (
     <nav className='border-b border-blue-500 bg-blue-700'>
@@ -58,112 +62,118 @@ const Navbar = () => {
               <div className='flex space-x-2'>
                 <Link
                   href='/'
-                  className='rounded-md bg-black px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
+                  className={`${pathname === '/' ? 'bg-black' : ''} rounded-md px-3 py-2 text-white hover:bg-gray-900 hover:text-white`}>
                   Home
                 </Link>
                 <Link
                   href='/properties'
-                  className='rounded-md px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
+                  className={`${pathname === '/properties' ? 'bg-black' : ''} rounded-md px-3 py-2 text-white hover:bg-gray-900 hover:text-white`}>
                   Properties
                 </Link>
-                <Link
-                  href='/properties/add'
-                  className='rounded-md px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
-                  Add Property
-                </Link>
+                {isLoggedIn && (
+                  <Link
+                    href='/properties/add'
+                    className={`${pathname === '/properties/add' ? 'bg-black' : ''} rounded-md px-3 py-2 text-white hover:bg-gray-900 hover:text-white`}>
+                    Add Property
+                  </Link>
+                )}
               </div>
             </div>
           </div>
           {/* right side menu (logged out) */}
-          <div className='hidden md:ml-6 md:block'>
-            <div className='flex items-center'>
-              <button className='flex items-center rounded-md bg-gray-700 px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
-                <FaGoogle className='mr-2 text-white' />
-                <span>Login or Register</span>
-              </button>
-            </div>
-          </div>
-          {/* right side menu (logged in) */}
-          <div className='absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0'>
-            <Link href='/messages' className='group relative'>
-              <button
-                type='button'
-                className='relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>
-                <span className='absolute -inset-1.5'></span>
-                <span className='sr-only'>View notifications</span>
-                <svg
-                  className='h-6 w-6'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth='1.5'
-                  stroke='currentColor'
-                  aria-hidden='true'>
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
-                  />
-                </svg>
-              </button>
-              <span className='absolute right-0 top-0 inline-flex -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-red-600 px-2 py-1 text-xs font-bold leading-none text-white'>
-                2{/* replace with the actual number of notifications */}
-              </span>
-            </Link>
-            {/* profile dropdown button */}
-            <div className='relative ml-3'>
-              <div>
-                <button
-                  type='button'
-                  className='relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
-                  id='user-menu-button'
-                  aria-expanded='false'
-                  aria-haspopup='true'
-                  onClick={() => setIsProfileDropdownOpen((prev) => !prev)}>
-                  <span className='absolute -inset-1.5'></span>
-                  <span className='sr-only'>Open user menu</span>
-                  <Image
-                    className='h-8 w-8 rounded-full'
-                    src={profileDefaultImage}
-                    alt=''
-                  />
+          {!isLoggedIn && (
+            <div className='hidden md:ml-6 md:block'>
+              <div className='flex items-center'>
+                <button className='flex items-center rounded-md bg-gray-700 px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
+                  <FaGoogle className='mr-2 text-white' />
+                  <span>Login or Register</span>
                 </button>
               </div>
-              {/* profile dropdown */}
-              {isProfileDropdownOpen && (
-                <div
-                  id='user-menu'
-                  className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
-                  role='menu'
-                  aria-orientation='vertical'
-                  aria-labelledby='user-menu-button'
-                  tabIndex='-1'>
-                  <Link
-                    href='/profile'
-                    className='block px-4 py-2 text-sm text-gray-700'
-                    role='menuitem'
-                    tabIndex='-1'
-                    id='user-menu-item-0'>
-                    Your Profile
-                  </Link>
-                  <Link
-                    href='/properties/saved'
-                    className='block px-4 py-2 text-sm text-gray-700'
-                    role='menuitem'
-                    tabIndex='-1'
-                    id='user-menu-item-2'>
-                    Saved Properties
-                  </Link>
+            </div>
+          )}
+          {/* right side menu (logged in) */}
+          {isLoggedIn && (
+            <div className='absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0'>
+              <Link href='/messages' className='group relative'>
+                <button
+                  type='button'
+                  className='relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>
+                  <span className='absolute -inset-1.5'></span>
+                  <span className='sr-only'>View notifications</span>
+                  <svg
+                    className='h-6 w-6'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth='1.5'
+                    stroke='currentColor'
+                    aria-hidden='true'>
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
+                    />
+                  </svg>
+                </button>
+                <span className='absolute right-0 top-0 inline-flex -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-red-600 px-2 py-1 text-xs font-bold leading-none text-white'>
+                  2{/* replace with the actual number of notifications */}
+                </span>
+              </Link>
+              {/* profile dropdown button */}
+              <div className='relative ml-3'>
+                <div>
                   <button
-                    className='block px-4 py-2 text-sm text-gray-700'
-                    role='menuitem'
-                    tabIndex='-1'
-                    id='user-menu-item-2'>
-                    Sign Out
+                    type='button'
+                    className='relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+                    id='user-menu-button'
+                    aria-expanded='false'
+                    aria-haspopup='true'
+                    onClick={() => setIsProfileDropdownOpen((prev) => !prev)}>
+                    <span className='absolute -inset-1.5'></span>
+                    <span className='sr-only'>Open user menu</span>
+                    <Image
+                      className='h-8 w-8 rounded-full'
+                      src={profileDefaultImage}
+                      alt=''
+                    />
                   </button>
                 </div>
-              )}
+                {/* profile dropdown */}
+                {isProfileDropdownOpen && (
+                  <div
+                    id='user-menu'
+                    className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
+                    role='menu'
+                    aria-orientation='vertical'
+                    aria-labelledby='user-menu-button'
+                    tabIndex='-1'>
+                    <Link
+                      href='/profile'
+                      className='block px-4 py-2 text-sm text-gray-700'
+                      role='menuitem'
+                      tabIndex='-1'
+                      id='user-menu-item-0'>
+                      Your Profile
+                    </Link>
+                    <Link
+                      href='/properties/saved'
+                      className='block px-4 py-2 text-sm text-gray-700'
+                      role='menuitem'
+                      tabIndex='-1'
+                      id='user-menu-item-2'>
+                      Saved Properties
+                    </Link>
+                    <button
+                      className='block px-4 py-2 text-sm text-gray-700'
+                      role='menuitem'
+                      tabIndex='-1'
+                      id='user-menu-item-2'>
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       {/* mobile menu */}
@@ -172,23 +182,27 @@ const Navbar = () => {
           <div className='space-y-1 px-2 pb-3 pt-2'>
             <Link
               href='/'
-              className='block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white'>
+              className={`${pathname === '/' ? 'bg-black' : ''} block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-900 hover:text-white`}>
               Home
             </Link>
             <Link
               href='/properties'
-              className='block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white'>
+              className={`${pathname === '/properties' ? 'bg-black' : ''} block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-900 hover:text-white`}>
               Properties
             </Link>
-            <Link
-              href='/properties/add'
-              className='block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white'>
-              Add Property
-            </Link>
-            <button className='my-4 flex items-center rounded-md bg-gray-700 px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
-              <FaGoogle className='mr-2 text-white' />
-              <span>Login or Register</span>
-            </button>
+            {isLoggedIn && (
+              <Link
+                href='/properties/add'
+                className={`${pathname === '/properties/add' ? 'bg-black' : ''} block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-900 hover:text-white`}>
+                Add Property
+              </Link>
+            )}
+            {!isLoggedIn && (
+              <button className='my-4 flex items-center rounded-md bg-gray-700 px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
+                <FaGoogle className='mr-2 text-white' />
+                <span>Login or Register</span>
+              </button>
+            )}
           </div>
         </div>
       )}
