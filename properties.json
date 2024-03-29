@@ -149,12 +149,7 @@
     "beds": 1,
     "baths": 1,
     "square_feet": 900,
-    "amenities": [
-      "Fireplace",
-      "Outdoor Grill/BBQ",
-      "Balcony/Patio",
-      "Coffee Maker"
-    ],
+    "amenities": ["Fireplace", "Outdoor Grill/BBQ", "Balcony/Patio", "Coffee Maker"],
     "rates": {
       "weekly": 2000
     },
@@ -255,12 +250,7 @@
     "beds": 2,
     "baths": 1,
     "square_feet": 1100,
-    "amenities": [
-      "Fireplace",
-      "Outdoor Grill/BBQ",
-      "Hiking Trails Access",
-      "Pet-Friendly"
-    ],
+    "amenities": ["Fireplace", "Outdoor Grill/BBQ", "Hiking Trails Access", "Pet-Friendly"],
     "rates": {
       "nightly": 475,
       "weekly": 2000
@@ -290,12 +280,7 @@
     "beds": 3,
     "baths": 2,
     "square_feet": 1800,
-    "amenities": [
-      "Ski Equipment Storage",
-      "Fireplace",
-      "Balcony/Patio",
-      "Smart TV"
-    ],
+    "amenities": ["Ski Equipment Storage", "Fireplace", "Balcony/Patio", "Smart TV"],
     "rates": {
       "nightly": 300,
       "weekly": 1100
@@ -361,12 +346,7 @@
     "beds": 2,
     "baths": 1,
     "square_feet": 1200,
-    "amenities": [
-      "High-Speed Internet",
-      "Air Conditioning",
-      "Smart TV",
-      "Coffee Maker"
-    ],
+    "amenities": ["High-Speed Internet", "Air Conditioning", "Smart TV", "Coffee Maker"],
     "rates": {
       "weekly": 550,
       "monthly": 2100

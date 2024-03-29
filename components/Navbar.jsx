@@ -48,11 +48,7 @@ const Navbar = () => {
           <div className='flex flex-1 items-center justify-center md:items-stretch md:justify-start'>
             {/* logo */}
             <Link className='flex flex-shrink-0 items-center' href='/'>
-              <Image
-                className='h-10 w-auto'
-                src={logoWhiteImage}
-                alt='PropertyPulse'
-              />
+              <Image className='h-10 w-auto' src={logoWhiteImage} alt='PropertyPulse' />
               <span className='ml-2 hidden text-2xl font-bold text-white md:block'>
                 PropertyPulse
               </span>
@@ -130,11 +126,7 @@ const Navbar = () => {
                     onClick={() => setIsProfileDropdownOpen((prev) => !prev)}>
                     <span className='absolute -inset-1.5'></span>
                     <span className='sr-only'>Open user menu</span>
-                    <Image
-                      className='h-8 w-8 rounded-full'
-                      src={profileDefaultImage}
-                      alt=''
-                    />
+                    <Image className='h-8 w-8 rounded-full' src={profileDefaultImage} alt='' />
                   </button>
                 </div>
                 {/* profile dropdown */}
