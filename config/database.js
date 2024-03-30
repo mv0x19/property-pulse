@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 let connected = false;
 
 const connectDB = async () => {
-  // only fields specified in scheme will be saved in database if strictQuery is true
+  // only fields specified in schema will be saved in database if strictQuery is true
   mongoose.set('strictQuery', true);
   // if connected to MongoDB, don't connect again
   if (connected) {
