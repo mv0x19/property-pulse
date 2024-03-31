@@ -56,7 +56,7 @@ const PropertyCard = ({ property }) => {
         </div>
         <div className='mb-5 border border-gray-100'></div>
         <div className='mb-4 flex flex-col justify-between lg:flex-row'>
-          <div className='mb-4 flex items-center gap-2 lg:mb-0'>
+          <div className='mb-4 flex items-center gap-2 align-middle lg:mb-0'>
             <FaMapMarker className='text-lg text-orange-700' />
             <span className='text-orange-700'>
               {property.location.city} {property.location.state}
