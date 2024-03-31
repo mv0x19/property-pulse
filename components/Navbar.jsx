@@ -1,19 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 import logoWhiteImage from '@/assets/images/logo-white.png';
 import profileDefaultImage from '@/assets/images/profile.png';
 import { FaGoogle } from 'react-icons/fa';
 
 const Navbar = () => {
+  const pathname = usePathname();
+  // get session data and name it session
+  const { data: session } = useSession();
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [providers, setProviders] = useState(null);
 
-  const pathname = usePathname();
+  useEffect(() => {
+    const setAuthProviders = async () => {
+      const response = await getProviders();
+      setProviders(response);
+    };
+    setAuthProviders();
+  }, []);
 
   return (
     <nav className='border-b border-blue-500 bg-blue-700'>
@@ -71,7 +82,7 @@ const Navbar = () => {
                   className={`${pathname === '/properties' ? 'bg-black' : ''} rounded-md px-3 py-2 text-white hover:bg-gray-900 hover:text-white`}>
                   Properties
                 </Link>
-                {isLoggedIn && (
+                {session && (
                   <Link
                     href='/properties/add'
                     className={`${pathname === '/properties/add' ? 'bg-black' : ''} rounded-md px-3 py-2 text-white hover:bg-gray-900 hover:text-white`}>
@@ -82,18 +93,26 @@ const Navbar = () => {
             </div>
           </div>
           {/* right side menu (logged out) */}
-          {!isLoggedIn && (
+          {!session && (
             <div className='hidden md:ml-6 md:block'>
               <div className='flex items-center'>
-                <button className='flex items-center rounded-md bg-gray-700 px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
-                  <FaGoogle className='mr-2 text-white' />
-                  <span>Login or Register</span>
-                </button>
+                {providers &&
+                  Object.values(providers).map((provider, index) => (
+                    <button
+                      onClick={() => {
+                        signIn(provider.id);
+                      }}
+                      key={index}
+                      className='flex items-center rounded-md bg-gray-700 px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
+                      <FaGoogle className='mr-2 text-white' />
+                      <span>Login or Register</span>
+                    </button>
+                  ))}
               </div>
             </div>
           )}
           {/* right side menu (logged in) */}
-          {isLoggedIn && (
+          {session && (
             <div className='absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0'>
               <Link href='/messages' className='group relative'>
                 <button
@@ -187,19 +206,26 @@ const Navbar = () => {
               className={`${pathname === '/properties' ? 'bg-black' : ''} block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-900 hover:text-white`}>
               Properties
             </Link>
-            {isLoggedIn && (
+            {session && (
               <Link
                 href='/properties/add'
                 className={`${pathname === '/properties/add' ? 'bg-black' : ''} block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-900 hover:text-white`}>
                 Add Property
               </Link>
             )}
-            {!isLoggedIn && (
-              <button className='my-4 flex items-center rounded-md bg-gray-700 px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
-                <FaGoogle className='mr-2 text-white' />
-                <span>Login or Register</span>
-              </button>
-            )}
+            {!session &&
+              providers &&
+              Object.values(providers).map((provider, index) => (
+                <button
+                  onClick={() => {
+                    signIn(provider.id);
+                  }}
+                  key={index}
+                  className='flex items-center rounded-md bg-gray-700 px-3 py-2 text-white hover:bg-gray-900 hover:text-white'>
+                  <FaGoogle className='mr-2 text-white' />
+                  <span>Login or Register</span>
+                </button>
+              ))}
           </div>
         </div>
       )}
