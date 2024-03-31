@@ -7,7 +7,7 @@ const cssOverride = {
   margin: '0 auto',
 };
 
-const LoadingPage = () => {
+const Spinner = () => {
   return (
     <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform'>
       <BounceLoader color='#2253d5' cssOverride={cssOverride} speedMultiplier='4' size={60} />
@@ -15,4 +15,4 @@ const LoadingPage = () => {
   );
 };
 
-export default LoadingPage;
+export default Spinner;
