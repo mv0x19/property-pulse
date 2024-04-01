@@ -13,6 +13,7 @@ const Navbar = () => {
   const pathname = usePathname();
   // get session data and name it session
   const { data: session } = useSession();
+  const profileImage = session?.user?.image;
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -150,7 +151,13 @@ const Navbar = () => {
                     onClick={() => setIsProfileDropdownOpen((prev) => !prev)}>
                     <span className='absolute -inset-1.5'></span>
                     <span className='sr-only'>Open user menu</span>
-                    <Image className='h-8 w-8 rounded-full' src={profileDefaultImage} alt='' />
+                    <Image
+                      className='h-8 w-8 rounded-full'
+                      src={profileImage || profileDefaultImage}
+                      alt=''
+                      width={40}
+                      height={40}
+                    />
                   </button>
                 </div>
                 {/* profile dropdown */}
