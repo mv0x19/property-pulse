@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 const PropertyAddForm = () => {
-  const [fields, seFields] = useState({
+  const [fields, setFields] = useState({
     type: 'Apartment',
     name: 'Test Property',
     description: 'Lorem ipsum dolor, sit consectetur. Qui?',
@@ -30,9 +30,61 @@ const PropertyAddForm = () => {
     images: [],
   });
 
-  const handleChange = () => {};
-  const handleAmenitiesChange = () => {};
-  const handleImageChange = () => {};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // check if nested: name='location.street'
+    if (name.includes('.')) {
+      const [outerKey, innerKey] = name.split('.');
+      console.log(outerKey, innerKey);
+      setFields((prevFields) => ({
+        ...prevFields,
+        [outerKey]: {
+          ...prevFields[outerKey],
+          [innerKey]: value,
+        },
+      }));
+      // not nested: name='type'
+    } else {
+      setFields((prevFields) => ({
+        ...prevFields,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleAmenitiesChange = (e) => {
+    const { value, checked } = e.target;
+    // clone the current array
+    const amenities = [...fields.amenities];
+    if (checked) {
+      // add value to the array
+      amenities.push(value);
+      // remove value from the array
+    } else {
+      const index = amenities.indexOf(value);
+      if (index !== -1) amenities.splice(index, 1);
+    }
+    console.log(amenities);
+    // update state with updated array
+    setFields((prevFields) => ({
+      ...prevFields,
+      amenities: amenities,
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const { files } = e.target;
+    console.log(files);
+    // clone the images array
+    const images = [...fields.images];
+    // add new file to the array
+    for (const file of files) images.push(file);
+    // update state with updated array
+    setFields((prevFields) => ({
+      ...prevFields,
+      images: images,
+    }));
+  };
 
   return (
     <form>
@@ -190,7 +242,7 @@ const PropertyAddForm = () => {
               name='amenities'
               value='Full Kitchen'
               className='mr-2'
-              checked={fields.amenities.includes('Wifi')}
+              checked={fields.amenities.includes('Full Kitchen')}
               onChange={handleAmenitiesChange}
             />
             <label htmlFor='amenity_kitchen'>Full kitchen</label>
